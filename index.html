@@ -34,7 +34,7 @@
 </head>
 <body>
     <!-- Audio Player -->
-    <audio id="background-audio" preload="auto" loop>
+    <audio id="background-audio" preload="auto" loop autoplay>
         <source src="jungle.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -42,20 +42,13 @@
     <!-- Title with adjusted spacing and font size -->
     <h1>there is nothing here right now</h1>
 
-    <!-- Play Button (initiates audio play on click) -->
+    <!-- Play/Pause Button (initiates audio play on click) -->
     <button style="font-size: 24px; background-color: transparent; color: #f0f0f0; border: none; outline: none; cursor: pointer; position: fixed; bottom: 20px; left: 20px;"
-            onclick="startAudio()">▶️</button>
+            onclick="togglePlayPause()">⏸️</button>
 
     <!-- JavaScript to control audio play -->
     <script>
         const audio = document.getElementById('background-audio');
-
-        // Function to start audio playback
-        function startAudio() {
-            audio.play();
-            document.querySelector('button').innerText = '⏸️'; // Change to pause icon
-            document.querySelector('button').onclick = togglePlayPause; // Change click action to pause
-        }
 
         // Function to toggle play/pause
         function togglePlayPause() {
