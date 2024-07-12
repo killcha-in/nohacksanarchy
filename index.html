@@ -33,7 +33,7 @@
 </head>
 <body>
     <!-- Audio Player -->
-    <audio id="background-audio">
+    <audio id="background-audio" autoplay>
         <source src="jungle.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -52,12 +52,12 @@
     <button style="font-size: 24px; background-color: transparent; color: #f0f0f0; border: none; outline: none; cursor: pointer; position: fixed; bottom: 20px; left: 20px;"
             onclick="togglePlayPause()">⏸️</button>
 
-    <!-- JavaScript to control play/pause and autoplay -->
+    <!-- JavaScript to control play/pause -->
     <script>
         const audio = document.getElementById('background-audio');
         let isPlaying = true;
 
-        // Autoplay audio on user interaction
+        // Autoplay audio on page load
         document.addEventListener('DOMContentLoaded', function() {
             audio.volume = 0.35; // Set volume to 35%
             audio.play();
