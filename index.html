@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nohacks.org</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
         @font-face {
             font-family: 'Minecraft';
@@ -18,7 +19,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            color: #eee; /* Lighter than flat white */
+            color: #f0f0f0; /* Slightly lighter text color */
             text-align: center;
             background: url('https://i.redd.it/9ra517ybxow21.png') no-repeat center center fixed;
             background-size: cover;
@@ -26,30 +27,34 @@
         h1 {
             font-size: 5vw;
             margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
     </style>
 </head>
 <body>
     <!-- Audio Player -->
-    <audio id="background-audio" autoplay>
+    <audio id="background-audio">
         <source src="jungle.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     
-    <!-- Title with drop shadow -->
-    <h1>
-        there is nothing here right now
-    </h1>
+    <!-- Title -->
+    <h1>there is nothing here right now</h1>
 
     <!-- Play/Pause Button (initially in play mode) -->
     <button style="font-size: 24px; background-color: transparent; color: #f0f0f0; border: none; outline: none; cursor: pointer; position: fixed; bottom: 20px; left: 20px;"
             onclick="togglePlayPause()">⏸️</button>
 
-    <!-- JavaScript to control play/pause -->
+    <!-- JavaScript to control play/pause and autoplay -->
     <script>
         const audio = document.getElementById('background-audio');
         let isPlaying = true;
+
+        // Autoplay audio on user interaction
+        document.addEventListener('DOMContentLoaded', function() {
+            audio.volume = 0.45; // Set volume to 45%
+            audio.play();
+        });
 
         function togglePlayPause() {
             if (isPlaying) {
@@ -62,16 +67,6 @@
                 document.querySelector('button').innerText = '⏸️'; // Change to pause icon
             }
         }
-
-        // Ensure audio plays at 60% volume
-        audio.volume = 0.6;
-
-        // Unmute audio when user interacts (required for autoplay in some browsers)
-        document.addEventListener('click', function() {
-            if (audio.paused && audio.muted) {
-                audio.muted = false;
-            }
-        });
     </script>
 </body>
 </html>
