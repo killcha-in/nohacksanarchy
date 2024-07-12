@@ -91,34 +91,34 @@
         .button.playing {
             opacity: 1; /* Opaque when playing */
         }
+        #enableSound {
+            font-size: 0.8vw; /* Adjusted font size */
+            cursor: default; /* Not clickable */
+            margin-top: 10px;
+            text-decoration: underline;
+        }
         #discordButton {
             position: fixed;
-            bottom: 10px; /* Adjusted bottom position */
-            right: 15px; /* Adjusted right position */
-            width: 45px;
-            height: 45px;
+            bottom: 10px;
+            right: calc(20px + 40px + 10px); /* Adjusted position */
+            width: 30px; /* Adjusted size */
+            height: 30px; /* Adjusted size */
             background: url('discord.png') no-repeat center center;
             background-size: contain;
             border: none;
             outline: none;
             cursor: pointer;
-            opacity: 1;
+            opacity: 0.5; /* Start with transparency */
             transition: opacity 0.3s ease-in-out;
         }
         #discordButton:hover {
-            opacity: 0.5; /* Transparent when hovered */
-        }
-        #enableSound {
-            font-size: 0.8vw; /* Adjusted font size */
-            cursor: pointer;
-            margin-top: 10px;
-            text-decoration: underline;
+            opacity: 1; /* Opaque when not hovered */
         }
     </style>
 </head>
 <body>
     <h1>there is nothing here right now</h1>
-    <p id="enableSound" onclick="enableSound()">click to enable sound</p>
+    <p id="enableSound">click the jukebox to enable sound</p>
     <div class="controls">
         <button class="button paused" onclick="togglePlayPause()"></button>
         <div class="slider-container">
@@ -132,7 +132,6 @@
         const playlist = ['4XQxPMxEREk', 'HpD0eG9bJtA', 'Bxoz2Mtw-SE', '5sQN5o0Yf6M'];
         let currentVideoIndex = 0;
         let soundEnabled = false;
-        let pausedByUser = false; // Track if paused by user
         
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
@@ -176,18 +175,8 @@
             const button = document.querySelector('.button');
             if (event.data === YT.PlayerState.PLAYING) {
                 button.classList.remove('paused');
-                // If paused by user, resume playing the current video
-                if (pausedByUser) {
-                    player.playVideo();
-                    pausedByUser = false;
-                }
             } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
                 button.classList.add('paused');
-                // If paused by video end, move to the next video in the playlist
-                if (event.data === YT.PlayerState.ENDED) {
-                    currentVideoIndex = (currentVideoIndex + 1) % playlist.length;
-                    player.loadVideoById(playlist[currentVideoIndex]);
-                }
             }
             updateJukeboxOpacity(); // Update opacity based on player state
         }
