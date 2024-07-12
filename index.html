@@ -7,7 +7,7 @@
     <style>
         @font-face {
             font-family: 'Minecraft';
-            src: url('fonts/Minecraft.ttf') format('truetype');
+            src: url('Fonts/Minecraft.ttf') format('truetype');
         }
         body, html {
             height: 100%;
@@ -24,34 +24,27 @@
             background-size: cover;
         }
         h1 {
-            font-size: 5vw; /* Adjust font size relative to viewport width */
+            font-size: 5vw; 
             margin: 0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); /* Small shadow */
-        }
-        h2 {
-            font-size: 2vw; /* Adjust font size relative to viewport width */
-            position: absolute;
-            top: 2vw;
-            left: 2vw;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); 
         }
     </style>
 </head>
 <body>
+    <!-- Audio Player -->
     <audio id="background-audio" autoplay>
         <source src="jungle.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    <h1>there is nothing here right now</h1>
+    
+    <!-- Title -->
+    <h1>There is nothing here right now</h1>
 
     <!-- Play/Pause Button (initially in play mode) -->
     <button style="font-size: 24px; background-color: transparent; color: #f0f0f0; border: none; outline: none; cursor: pointer; position: fixed; bottom: 20px; left: 20px;"
             onclick="togglePlayPause()">⏸️</button>
 
-    <!-- Volume Bar (hidden by default) -->
-    <div id="volume-bar" style="width: 100px; height: 10px; background-color: #ccc; border-radius: 5px; display: none; position: fixed; bottom: 40px; left: 20px;">
-        <div id="volume-progress" style="height: 100%; background-color: #4CAF50; border-radius: 5px;"></div>
-    </div>
-
+    <!-- JavaScript to control play/pause -->
     <script>
         const audio = document.getElementById('background-audio');
         let isPlaying = true;
@@ -68,15 +61,8 @@
             }
         }
 
-        // Function to show volume bar on mouseover
-        function showVolumeBar() {
-            document.getElementById('volume-bar').style.display = 'block';
-        }
-
-        // Function to hide volume bar on mouseout
-        function hideVolumeBar() {
-            document.getElementById('volume-bar').style.display = 'none';
-        }
+        // Set volume to 60%
+        audio.volume = 0.6;
     </script>
 </body>
 </html>
