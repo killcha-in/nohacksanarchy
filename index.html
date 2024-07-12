@@ -24,21 +24,23 @@
             background-size: cover;
         }
         h1 {
-            font-size: 5vw; 
+            font-size: 5vw;
             margin: 0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
     </style>
 </head>
 <body>
     <!-- Audio Player -->
-    <audio id="background-audio" autoplay>
+    <audio id="background-audio" autoplay muted>
         <source src="jungle.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     
-    <!-- Title -->
-    <h1>there is nothing here right now</h1>
+    <!-- Title with drop shadow -->
+    <h1>
+        there is nothing here right now
+    </h1>
 
     <!-- Play/Pause Button (initially in play mode) -->
     <button style="font-size: 24px; background-color: transparent; color: #f0f0f0; border: none; outline: none; cursor: pointer; position: fixed; bottom: 20px; left: 20px;"
@@ -61,8 +63,12 @@
             }
         }
 
-        // Set volume to 60%
-        audio.volume = 0.6;
+        // Unmute audio when user interacts (required for autoplay in some browsers)
+        document.addEventListener('click', function() {
+            if (audio.paused && audio.muted) {
+                audio.muted = false;
+            }
+        });
     </script>
 </body>
 </html>
