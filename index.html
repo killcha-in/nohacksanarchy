@@ -85,27 +85,35 @@
             border: none;
             outline: none;
             cursor: pointer;
-            opacity: 1;
+            opacity: 0.5; /* Start with transparency */
             transition: opacity 0.3s ease-in-out;
         }
-        .button.paused {
-            opacity: 0.5;
+        .button.playing {
+            opacity: 1; /* Opaque when playing */
+        }
+        #enableSound {
+            font-size: 0.8vw; /* Adjusted font size */
+            cursor: pointer;
+            margin-top: 10px;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <h1>there is nothing here right now</h1>
+    <p id="enableSound" onclick="enableSound()">click to enable sound</p>
     <div class="controls">
-        <button class="button" onclick="togglePlayPause()"></button>
+        <button class="button paused" onclick="togglePlayPause()"></button>
         <div class="slider-container">
-            <input type="range" min="0" max="100" value="35" class="slider" id="volumeSlider">
+            <input type="range" min="0" max="100" value="100" class="slider" id="volumeSlider">
         </div>
     </div>
     <div id="player"></div>
     <script>
         let player;
-        const playlist = ['BPSnazHNUfA', 'MFeqcv1rO5E', 'm6b5Npai6jQ'];
+        const playlist = ['4XQxPMxEREk', 'HpD0eG9bJtA', 'Bxoz2Mtw-SE', '5sQN5o0Yf6M'];
         let currentVideoIndex = 0;
+        let soundEnabled = false;
         
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
@@ -113,14 +121,15 @@
                 width: '0',
                 videoId: playlist[currentVideoIndex],
                 playerVars: {
-                    'autoplay': 1,
+                    'autoplay': 0, // Autoplay off initially
                     'loop': 0,
                     'controls': 0,
                     'showinfo': 0,
                     'rel': 0,
-                    'mute': 1,
+                    'mute': 1, // Start muted
                     'enablejsapi': 1,
-                    'iv_load_policy': 3
+                    'iv_load_policy': 3,
+                    'start': 0 // Start at the beginning of the video
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -130,32 +139,54 @@
         }
         
         function onPlayerReady(event) {
+            // Wait a short moment before unmuting and setting volume to ensure readiness
             setTimeout(function() {
                 player.unMute();
-                player.setVolume(35);
-            }, 1000);
+                player.setVolume(100); // Set volume to 100 (maximum)
+                player.playVideo(); // Start playing the video
+            }, 500);
+            
+            // Setup volume slider
             document.getElementById('volumeSlider').addEventListener('input', function() {
                 let volume = parseInt(this.value);
                 player.setVolume(volume);
             });
-            player.playVideo();
         }
         
         function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.ENDED) {
-                currentVideoIndex = (currentVideoIndex + 1) % playlist.length;
-                player.loadVideoById(playlist[currentVideoIndex]);
+            const button = document.querySelector('.button');
+            if (event.data === YT.PlayerState.PLAYING) {
+                button.classList.remove('paused');
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                button.classList.add('paused');
             }
+            updateJukeboxOpacity(); // Update opacity based on player state
         }
         
         function togglePlayPause() {
-            const button = document.querySelector('.button');
+            if (!soundEnabled) {
+                enableSound();
+            }
             if (player.getPlayerState() === YT.PlayerState.PLAYING) {
                 player.pauseVideo();
-                button.classList.add('paused');
             } else {
                 player.playVideo();
-                button.classList.remove('paused');
+            }
+            updateJukeboxOpacity(); // Update opacity after toggling play/pause
+        }
+        
+        function enableSound() {
+            document.getElementById('enableSound').style.display = 'none'; // Hide the enable sound text
+            soundEnabled = true;
+            updateJukeboxOpacity(); // Ensure button opacity reflects play state
+        }
+        
+        function updateJukeboxOpacity() {
+            const button = document.querySelector('.button');
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                button.style.opacity = '1';
+            } else {
+                button.style.opacity = '0.5';
             }
         }
     </script>
