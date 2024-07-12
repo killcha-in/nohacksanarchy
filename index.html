@@ -1,1 +1,164 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>nohacks.org</title><link rel="icon" href="favicon.ico" type="image/x-icon"><meta content="nohacks.org" property="og:title" /><meta content="there is nothing here right now" property="og:description" /><meta content="http://nohacks.org" property="og:url" /><meta content="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/68/Bedrock_JE2_BE2.png/revision/latest?cb=20200224220504" property="og:image" /><meta content="#242424" data-react-helmet="true" name="theme-color" /><style>@font-face {font-family: 'Minecraft';src: url('Fonts/Minecraft.ttf') format('truetype');}body, html {height: 100%;margin: 0;font-family: 'Minecraft', sans-serif;display: flex;flex-direction: column;justify-content: center;align-items: center;overflow: hidden;color: #f0f0f0;text-align: center;background: url('bedrockbg.png') no-repeat center center fixed;background-size: cover;}h1 {font-size: 4.5vw;margin: 0;text-shadow: 1px 1px 2px rgba(0,0,0,0.8);letter-spacing: 0.02em;} .controls {position: fixed;bottom: 20px;left: 20px;display: flex;align-items: center;z-index: 999;} .slider-container {width: 80px;margin-left: 5px;} .slider {-webkit-appearance: none;appearance: none;width: 100%;height: 6px;background: #eee;outline: none;opacity: 0.7;transition: opacity 0.15s ease-in-out;border-radius: 4px;} .slider:hover {opacity: 1;} .slider::-webkit-slider-thumb {-webkit-appearance: none;appearance: none;width: 12px;height: 12px;background: #fff;cursor: pointer;border-radius: 50%;} .slider::-moz-range-thumb {width: 12px;height: 12px;background: #fff;cursor: pointer;border-radius: 50%;} .button {font-size: 24px;background-color: transparent;color: #f0f0f0;border: none;outline: none;cursor: pointer;} </style></head><body><h1>there is nothing here right now</h1><div class="controls"><button class="button" onclick="togglePlayPause()">⏸️</button><div class="slider-container"><input type="range" min="0" max="100" value="35" class="slider" id="volumeSlider"></div></div><div id="player"></div><script>let player;const playlist = ['BPSnazHNUfA', 'MFeqcv1rO5E', 'm6b5Npai6jQ'];let currentVideoIndex = 0;function onYouTubeIframeAPIReady() {player = new YT.Player('player', {height: '0',width: '0',videoId: playlist[currentVideoIndex],playerVars: {'autoplay': 1,'loop': 0,'controls': 0,'showinfo': 0,'rel': 0,'mute': 1,'enablejsapi': 1,'iv_load_policy': 3},events: {'onReady': onPlayerReady,'onStateChange': onPlayerStateChange}});}function onPlayerReady(event) {setTimeout(function() {player.unMute();player.setVolume(35);}, 1000);document.getElementById('volumeSlider').addEventListener('input', function() {let volume = parseInt(this.value);player.setVolume(volume);});player.playVideo();}function onPlayerStateChange(event) {if (event.data === YT.PlayerState.ENDED) {currentVideoIndex = (currentVideoIndex + 1) % playlist.length;player.loadVideoById(playlist[currentVideoIndex]);}}function togglePlayPause() {if (player.getPlayerState() === YT.PlayerState.PLAYING) {player.pauseVideo();document.querySelector('.button').innerText = '▶️';} else {player.playVideo();document.querySelector('.button').innerText = '⏸️';}}</script><script src="https://www.youtube.com/iframe_api"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nohacks.org</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta content="nohacks.org" property="og:title" />
+    <meta content="there is nothing here right now" property="og:description" />
+    <meta content="http://nohacks.org" property="og:url" />
+    <meta content="https://static.wikia.nocookie.net/minecraft_gamepedia/images/6/68/Bedrock_JE2_BE2.png/revision/latest?cb=20200224220504" property="og:image" />
+    <meta content="#242424" data-react-helmet="true" name="theme-color" />
+    <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('Fonts/Minecraft.ttf') format('truetype');
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Minecraft', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #f0f0f0;
+            text-align: center;
+            background: url('bedrockbg.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+        h1 {
+            font-size: 4.5vw;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            letter-spacing: 0.02em;
+        }
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 999;
+        }
+        .slider-container {
+            width: 80px;
+            margin-left: 5px;
+        }
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #eee;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.15s ease-in-out;
+            border-radius: 4px;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .button {
+            width: 40px;
+            height: 40px;
+            background: url('jukebox.png') no-repeat center center;
+            background-size: contain;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .button.paused {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>there is nothing here right now</h1>
+    <div class="controls">
+        <button class="button" onclick="togglePlayPause()"></button>
+        <div class="slider-container">
+            <input type="range" min="0" max="100" value="35" class="slider" id="volumeSlider">
+        </div>
+    </div>
+    <div id="player"></div>
+    <script>
+        let player;
+        const playlist = ['BPSnazHNUfA', 'MFeqcv1rO5E', 'm6b5Npai6jQ'];
+        let currentVideoIndex = 0;
+        
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: playlist[currentVideoIndex],
+                playerVars: {
+                    'autoplay': 1,
+                    'loop': 0,
+                    'controls': 0,
+                    'showinfo': 0,
+                    'rel': 0,
+                    'mute': 1,
+                    'enablejsapi': 1,
+                    'iv_load_policy': 3
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+        
+        function onPlayerReady(event) {
+            setTimeout(function() {
+                player.unMute();
+                player.setVolume(35);
+            }, 1000);
+            document.getElementById('volumeSlider').addEventListener('input', function() {
+                let volume = parseInt(this.value);
+                player.setVolume(volume);
+            });
+            player.playVideo();
+        }
+        
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                currentVideoIndex = (currentVideoIndex + 1) % playlist.length;
+                player.loadVideoById(playlist[currentVideoIndex]);
+            }
+        }
+        
+        function togglePlayPause() {
+            const button = document.querySelector('.button');
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+                button.classList.add('paused');
+            } else {
+                player.playVideo();
+                button.classList.remove('paused');
+            }
+        }
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>
