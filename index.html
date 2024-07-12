@@ -30,60 +30,130 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
             letter-spacing: 0.02em; /* Tiny letter spacing */
         }
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 999; /* Ensure controls are above other content */
+        }
+        .slider-container {
+            width: 80px; /* Adjusted width of the slider container */
+            margin-left: 5px; /* Reduced margin between button and slider */
+        }
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%; /* Full width of the slider */
+            height: 6px; /* Height of the slider */
+            background: #eee; /* Brighter background color */
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.15s ease-in-out;
+            border-radius: 4px; /* Rounded corners */
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px; /* Width of the slider thumb */
+            height: 12px; /* Height of the slider thumb */
+            background: #fff; /* White slider thumb */
+            cursor: pointer;
+            border-radius: 50%; /* Round slider thumb */
+        }
+        .slider::-moz-range-thumb {
+            width: 12px; /* Width of the slider thumb */
+            height: 12px; /* Height of the slider thumb */
+            background: #fff; /* White slider thumb */
+            cursor: pointer;
+            border-radius: 50%; /* Round slider thumb */
+        }
+        .button {
+            font-size: 24px;
+            background-color: transparent;
+            color: #f0f0f0;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <!-- Audio Player -->
-    <audio id="background-audio" preload="auto" loop>
-        <source src="jungle.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    
     <!-- Title with adjusted spacing and font size -->
     <h1>there is nothing here right now</h1>
 
-    <!-- Play/Pause Button (initiates audio play on click) -->
-    <button style="font-size: 24px; background-color: transparent; color: #f0f0f0; border: none; outline: none; cursor: pointer; position: fixed; bottom: 20px; left: 20px;"
-            onclick="togglePlayPause()">⏸️</button>
+    <!-- Controls: Play/Pause Button and Volume Slider -->
+    <div class="controls">
+        <!-- Play/Pause Button -->
+        <button class="button" onclick="togglePlayPause()">⏸️</button>
 
-    <!-- JavaScript to control audio play -->
+        <!-- Volume Slider -->
+        <div class="slider-container">
+            <input type="range" min="0" max="100" value="35" class="slider" id="volumeSlider">
+        </div>
+    </div>
+
+    <!-- YouTube iframe player with controls -->
+    <div id="player"></div>
+
+    <!-- JavaScript to control YouTube player and volume -->
     <script>
-        const audio = document.getElementById('background-audio');
+        let player;
 
-        // Check if the audio can autoplay
-        function canAutoplay() {
-            return new Promise((resolve, reject) => {
-                if ('mediaSession' in navigator) {
-                    resolve(true);
-                } else {
-                    reject(new Error('Autoplay is not supported'));
+        // Function to initialize the YouTube player
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: 'WOCqx4KQLTk', // Replace with your video ID
+                playerVars: {
+                    'autoplay': 1,
+                    'loop': 1,
+                    'controls': 0,
+                    'showinfo': 0,
+                    'rel': 0,
+                    'mute': 0,
+                    'enablejsapi': 1,
+                    'iv_load_policy': 3 // Removes annotations
+                },
+                events: {
+                    'onReady': onPlayerReady
                 }
             });
         }
 
-        // Autoplay audio when the page loads
-        window.addEventListener('load', function() {
-            canAutoplay().then(() => {
-                audio.play();
-            }).catch(error => {
-                console.log('Autoplay was prevented:', error);
-                // Handle the autoplay restriction here (e.g., show a play button)
+        // Function called when player is ready
+        function onPlayerReady(event) {
+            // Wait a short delay to ensure player settings are applied
+            setTimeout(function() {
+                player.setVolume(35); // Set initial volume to 35
+            }, 1000); // Adjust this delay if necessary
+
+            // Add event listener to update volume when slider is changed
+            document.getElementById('volumeSlider').addEventListener('input', function() {
+                let volume = parseInt(this.value);
+                player.setVolume(volume);
             });
-        });
+
+            // Start playing the video
+            player.playVideo();
+        }
 
         // Function to toggle play/pause
         function togglePlayPause() {
-            if (audio.paused) {
-                audio.play();
-                document.querySelector('button').innerText = '⏸️'; // Change to pause icon
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+                document.querySelector('.button').innerText = '▶️'; // Change to play icon
             } else {
-                audio.pause();
-                document.querySelector('button').innerText = '▶️'; // Change to play icon
+                player.playVideo();
+                document.querySelector('.button').innerText = '⏸️'; // Change to pause icon
             }
         }
-
-        // Set initial volume to 35%
-        audio.volume = 0.35;
     </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
