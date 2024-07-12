@@ -34,7 +34,7 @@
 </head>
 <body>
     <!-- Audio Player -->
-    <audio id="background-audio" autoplay preload="auto" loop>
+    <audio id="background-audio" preload="auto" loop>
         <source src="jungle.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -42,37 +42,33 @@
     <!-- Title with adjusted spacing and font size -->
     <h1>there is nothing here right now</h1>
 
-    <!-- Play/Pause Button (initially in play mode) -->
+    <!-- Play Button (initiates audio play on click) -->
     <button style="font-size: 24px; background-color: transparent; color: #f0f0f0; border: none; outline: none; cursor: pointer; position: fixed; bottom: 20px; left: 20px;"
-            onclick="togglePlayPause()">⏸️</button>
+            onclick="startAudio()">▶️</button>
 
-    <!-- JavaScript to control play/pause -->
+    <!-- JavaScript to control audio play -->
     <script>
         const audio = document.getElementById('background-audio');
-        let isPlaying = true;
 
-        // Check if audio is playing on load
-        audio.addEventListener('play', function() {
-            isPlaying = true;
+        // Function to start audio playback
+        function startAudio() {
+            audio.play();
             document.querySelector('button').innerText = '⏸️'; // Change to pause icon
-        });
+            document.querySelector('button').onclick = togglePlayPause; // Change click action to pause
+        }
 
-        // Check if audio is paused on load
-        audio.addEventListener('pause', function() {
-            isPlaying = false;
-            document.querySelector('button').innerText = '▶️'; // Change to play icon
-        });
-
-        // Toggle play/pause
+        // Function to toggle play/pause
         function togglePlayPause() {
-            if (isPlaying) {
-                audio.pause();
-            } else {
+            if (audio.paused) {
                 audio.play();
+                document.querySelector('button').innerText = '⏸️'; // Change to pause icon
+            } else {
+                audio.pause();
+                document.querySelector('button').innerText = '▶️'; // Change to play icon
             }
         }
 
-        // Set volume to 35%
+        // Set initial volume to 35%
         audio.volume = 0.35;
     </script>
 </body>
