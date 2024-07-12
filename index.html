@@ -124,6 +124,7 @@
                     'controls': 0,
                     'showinfo': 0,
                     'rel': 0,
+                    'mute': 1, // Start muted
                     'enablejsapi': 1,
                     'iv_load_policy': 3 // Removes annotations
                 },
@@ -136,8 +137,9 @@
 
         // Function called when player is ready
         function onPlayerReady(event) {
-            // Wait a short delay to ensure player settings are applied
+            // Unmute after a short delay
             setTimeout(function() {
+                player.unMute();
                 player.setVolume(35); // Set initial volume to 35
             }, 1000); // Adjust this delay if necessary
 
