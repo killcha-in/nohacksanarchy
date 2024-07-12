@@ -114,6 +114,7 @@
         const playlist = ['4XQxPMxEREk', 'HpD0eG9bJtA', 'Bxoz2Mtw-SE', '5sQN5o0Yf6M'];
         let currentVideoIndex = 0;
         let soundEnabled = false;
+        let pausedByUser = false; // Track if paused by user
         
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
@@ -157,8 +158,18 @@
             const button = document.querySelector('.button');
             if (event.data === YT.PlayerState.PLAYING) {
                 button.classList.remove('paused');
+                // If paused by user, resume playing the current video
+                if (pausedByUser) {
+                    player.playVideo();
+                    pausedByUser = false;
+                }
             } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
                 button.classList.add('paused');
+                // If paused by video end, move to the next video in the playlist
+                if (event.data === YT.PlayerState.ENDED) {
+                    currentVideoIndex = (currentVideoIndex + 1) % playlist.length;
+                    player.loadVideoById(playlist[currentVideoIndex]);
+                }
             }
             updateJukeboxOpacity(); // Update opacity based on player state
         }
