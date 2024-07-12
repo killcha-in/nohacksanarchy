@@ -34,7 +34,7 @@
 </head>
 <body>
     <!-- Audio Player -->
-    <audio id="background-audio" autoplay>
+    <audio id="background-audio" autoplay preload="auto" loop>
         <source src="jungle.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -51,23 +51,29 @@
         const audio = document.getElementById('background-audio');
         let isPlaying = true;
 
-        // Autoplay audio on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            audio.volume = 0.35; // Set volume to 35%
-            audio.play();
+        // Check if audio is playing on load
+        audio.addEventListener('play', function() {
+            isPlaying = true;
+            document.querySelector('button').innerText = '⏸️'; // Change to pause icon
         });
 
+        // Check if audio is paused on load
+        audio.addEventListener('pause', function() {
+            isPlaying = false;
+            document.querySelector('button').innerText = '▶️'; // Change to play icon
+        });
+
+        // Toggle play/pause
         function togglePlayPause() {
             if (isPlaying) {
                 audio.pause();
-                isPlaying = false;
-                document.querySelector('button').innerText = '▶️'; // Change to play icon
             } else {
                 audio.play();
-                isPlaying = true;
-                document.querySelector('button').innerText = '⏸️'; // Change to pause icon
             }
         }
+
+        // Set volume to 35%
+        audio.volume = 0.35;
     </script>
 </body>
 </html>
