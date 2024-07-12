@@ -34,7 +34,7 @@
 </head>
 <body>
     <!-- Audio Player -->
-    <audio id="background-audio" preload="auto" loop autoplay>
+    <audio id="background-audio" preload="auto" loop>
         <source src="jungle.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -49,6 +49,27 @@
     <!-- JavaScript to control audio play -->
     <script>
         const audio = document.getElementById('background-audio');
+
+        // Check if the audio can autoplay
+        function canAutoplay() {
+            return new Promise((resolve, reject) => {
+                if ('mediaSession' in navigator) {
+                    resolve(true);
+                } else {
+                    reject(new Error('Autoplay is not supported'));
+                }
+            });
+        }
+
+        // Autoplay audio when the page loads
+        window.addEventListener('load', function() {
+            canAutoplay().then(() => {
+                audio.play();
+            }).catch(error => {
+                console.log('Autoplay was prevented:', error);
+                // Handle the autoplay restriction here (e.g., show a play button)
+            });
+        });
 
         // Function to toggle play/pause
         function togglePlayPause() {
