@@ -111,12 +111,14 @@
             player = new YT.Player('player', {
                 height: '0',
                 width: '0',
-                videoId: playlist[0], // Set the first video ID from the playlist
+                videoId: playlist[currentVideoIndex], // Set the first video ID from the playlist
                 playerVars: {
                     'autoplay': 1,
+                    'loop': 1,
                     'controls': 0,
                     'showinfo': 0,
                     'rel': 0,
+                    'mute': 0,
                     'enablejsapi': 1,
                     'iv_load_policy': 3 // Removes annotations
                 },
@@ -129,25 +131,27 @@
 
         // Function called when player is ready
         function onPlayerReady(event) {
-            player.setVolume(35); // Set initial volume to 35
+            // Wait a short delay to ensure player settings are applied
+            setTimeout(function() {
+                player.setVolume(35); // Set initial volume to 35
+            }, 1000); // Adjust this delay if necessary
+
+            // Add event listener to update volume when slider is changed
+            document.getElementById('volumeSlider').addEventListener('input', function() {
+                let volume = parseInt(this.value);
+                player.setVolume(volume);
+            });
+
+            // Start playing the video
+            player.playVideo();
         }
 
         // Function to handle state changes in the player
         function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                document.querySelector('.button').innerText = '⏸️'; // Change to pause icon
-            } else {
-                document.querySelector('.button').innerText = '▶️'; // Change to play icon
-            }
             if (event.data === YT.PlayerState.ENDED) {
                 // Play the next video in the playlist when current video ends
-                currentVideoIndex++;
-                if (currentVideoIndex < playlist.length) {
-                    player.loadVideoById(playlist[currentVideoIndex]);
-                } else {
-                    currentVideoIndex = 0; // Loop back to the beginning if end of playlist
-                    player.loadVideoById(playlist[currentVideoIndex]);
-                }
+                currentVideoIndex = (currentVideoIndex + 1) % playlist.length;
+                player.loadVideoById(playlist[currentVideoIndex]);
             }
         }
 
@@ -155,8 +159,10 @@
         function togglePlayPause() {
             if (player.getPlayerState() === YT.PlayerState.PLAYING) {
                 player.pauseVideo();
+                document.querySelector('.button').innerText = '▶️'; // Change to play icon
             } else {
                 player.playVideo();
+                document.querySelector('.button').innerText = '⏸️'; // Change to pause icon
             }
         }
     </script>
