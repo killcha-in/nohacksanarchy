@@ -99,20 +99,20 @@
         }
         #discordButton {
             position: fixed;
-            bottom: 10px;
-            right: calc(20px + 40px + 10px); /* Adjusted position */
-            width: 30px; /* Adjusted size */
-            height: 30px; /* Adjusted size */
+            bottom: 20px; /* Mirror bottom position of jukebox button */
+            right: 20px; /* Mirror right position of jukebox button */
+            width: 40px; /* Same size as jukebox button */
+            height: 40px; /* Same size as jukebox button */
             background: url('discord.png') no-repeat center center;
             background-size: contain;
             border: none;
             outline: none;
             cursor: pointer;
-            opacity: 0.5; /* Start with transparency */
+            opacity: 1; /* Opaque by default */
             transition: opacity 0.3s ease-in-out;
         }
         #discordButton:hover {
-            opacity: 1; /* Opaque when not hovered */
+            opacity: 0.5; /* Transparent when hovered */
         }
     </style>
 </head>
