@@ -6,10 +6,10 @@
     <title>nohacks.org</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta content="nohacks.org" property="og:title" />
-    <meta content="join nohacks.org today " property="og:description" />
+    <meta content="join nohacks.org today" property="og:description" />
     <meta content="http://nohacks.org" property="og:url" />
     <meta content="https://nohacks.org/nohacks256.png" property="og:image" />
-    <meta content="#242424" data-react-helmet="true" name="theme-color" />
+    <meta content="#242424" name="theme-color" />
     <style>
         @font-face {
             font-family: 'Minecraft';
@@ -44,7 +44,7 @@
             z-index: 999;
         }
         .slider-container {
-            width: 80px;
+            width: 96px;
             margin-left: 5px;
         }
         .slider {
@@ -78,52 +78,51 @@
             border-radius: 50%;
         }
         .button {
-            width: 40px;
-            height: 40px;
+            width: 52px;
+            height: 52px;
             background: url('jukebox.png') no-repeat center center;
             background-size: contain;
             border: none;
             outline: none;
             cursor: pointer;
-            opacity: 0.5; /* Start with transparency */
+            opacity: 1;
             transition: opacity 0.3s ease-in-out;
         }
-        .button.playing {
-            opacity: 1; /* Opaque when playing */
+        .button:hover {
+            opacity: 0.5;
         }
         #enableSound {
-            font-size: 0.8vw; /* Adjusted font size */
-            cursor: default; /* Not clickable */
+            font-size: 0.8vw;
+            cursor: default;
             margin-top: 10px;
             text-decoration: underline;
         }
-        /* Adjust font size for smaller screens */
         @media (max-width: 600px) {
             #enableSound {
-                font-size: 3vw; /* Larger on smaller screens */
+                font-size: 3vw;
             }
         }
         #discordButton {
             position: fixed;
-            bottom: 20px; /* Mirror bottom position of jukebox button */
-            right: 20px; /* Mirror right position of jukebox button */
-            width: 40px; /* Same size as jukebox button */
-            height: 40px; /* Same size as jukebox button */
+            bottom: 20px;
+            right: 20px;
+            width: 54px;
+            height: 54px;
             background: url('discord.png') no-repeat center center;
             background-size: contain;
             border: none;
             outline: none;
             cursor: pointer;
-            opacity: 1; /* Opaque by default */
+            opacity: 1;
             transition: opacity 0.3s ease-in-out;
         }
         #discordButton:hover {
-            opacity: 0.5; /* Transparent when hovered */
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
-    <h1>join nohacks.org today </h1>
+    <h1>join nohacks.org today</h1>
     <p id="enableSound">click the jukebox to enable sound</p>
     <div class="controls">
         <button class="button" onclick="togglePlayPause()"></button>
@@ -139,9 +138,8 @@
         let currentVideoIndex = 0;
         let soundEnabled = false;
 
-        // Key sequence for skipping
         let keySequence = [];
-        const secretKeySequence = ['s', 's']; // Secret key sequence to skip
+        const secretKeySequence = ['s', 's'];
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
@@ -149,15 +147,15 @@
                 width: '0',
                 videoId: playlist[currentVideoIndex],
                 playerVars: {
-                    'autoplay': 0, // Autoplay off initially
+                    'autoplay': 0,
                     'loop': 0,
                     'controls': 0,
                     'showinfo': 0,
                     'rel': 0,
-                    'mute': 1, // Start muted
+                    'mute': 1,
                     'enablejsapi': 1,
                     'iv_load_policy': 3,
-                    'start': 0 // Start at the beginning of the video
+                    'start': 0
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -165,29 +163,28 @@
                 }
             });
         }
-        
+
         function onPlayerReady(event) {
-            // Setup volume slider
             document.getElementById('volumeSlider').addEventListener('input', function() {
                 let volume = parseInt(this.value);
                 player.setVolume(volume);
             });
         }
-        
+
         function onPlayerStateChange(event) {
             const button = document.querySelector('.button');
             if (event.data === YT.PlayerState.PLAYING) {
                 button.classList.add('playing');
-                updateJukeboxOpacity(); // Update opacity based on player state
+                updateJukeboxOpacity();
             } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
                 button.classList.remove('playing');
-                updateJukeboxOpacity(); // Update opacity based on player state
+                updateJukeboxOpacity();
                 if (event.data === YT.PlayerState.ENDED) {
                     playNextVideo();
                 }
             }
         }
-        
+
         function togglePlayPause() {
             if (!soundEnabled) {
                 enableSound();
@@ -197,39 +194,34 @@
             } else {
                 player.playVideo();
             }
-            updateJukeboxOpacity(); // Update opacity after toggling play/pause
+            updateJukeboxOpacity();
         }
-        
+
         function enableSound() {
-            document.getElementById('enableSound').style.display = 'none'; // Hide the enable sound text
+            document.getElementById('enableSound').style.display = 'none';
             soundEnabled = true;
-            player.unMute(); // Unmute the player
-            player.setVolume(100); // Set volume to 100 (maximum)
+            player.unMute();
+            player.setVolume(100);
         }
-        
+
         function updateJukeboxOpacity() {
             const button = document.querySelector('.button');
-            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-                button.style.opacity = '1';
-            } else {
-                button.style.opacity = '0.5';
-            }
+            button.style.opacity = (player.getPlayerState() === YT.PlayerState.PLAYING) ? '1' : '0.3';
         }
-        
+
         function playNextVideo() {
             currentVideoIndex = (currentVideoIndex + 1) % playlist.length;
             player.loadVideoById(playlist[currentVideoIndex]);
         }
-        
-        // Detect key presses for the secret key sequence
+
         document.addEventListener('keydown', function(event) {
             keySequence.push(event.key);
             if (keySequence.length > secretKeySequence.length) {
                 keySequence.shift();
             }
             if (keySequence.join('') === secretKeySequence.join('')) {
-                keySequence = []; // Clear the sequence
-                playNextVideo(); // Skip to the next song
+                keySequence = [];
+                playNextVideo();
             }
         });
     </script>
